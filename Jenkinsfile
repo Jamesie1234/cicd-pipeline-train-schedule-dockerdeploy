@@ -13,10 +13,11 @@ pipeline {
                 branch 'master'
             }
             steps {
+                #This is to allow me to use shell command as the code does not support delarative pipeline
                 script {
-                    app = docker.build("robinodocker/train-schedule")
+                    app = docker.build("robinodocker/train-schedule") # build image from my docker hub
                     app.inside {
-                        sh 'echo $(curl localhost:8080)'
+                        sh 'echo $(curl localhost:8080)' #Test the image with curl command
                     }
                 }
             }
@@ -26,10 +27,12 @@ pipeline {
                 branch 'master'
             }
             steps {
+                #This is to allow me to use shell command as the code does not support delarative pipeline
                 script {
+                    #using default docker registry to push the image with the credentials created in Jenkins
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login_new') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
+                        app.push("${env.BUILD_NUMBER}")#versioning the build
+                        app.push("latest")#latest will be appended to the end of the image name
                     }
                 }
             }
