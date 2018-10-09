@@ -44,7 +44,7 @@ pipeline {
             steps {
                 input 'Deploy to Production?'
                 milestone(1)
-                withCredentials([usernamePassword(credentialsId: 'ubuntu-ansible-login', usernameVariable: 'USER', passwordVariable: 'USERPASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'ubuntu-terr', usernameVariable: 'USER', passwordVariable: 'USERPASS')]) {
                     script {
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USER@$prod_ip \"docker pull robinodocker/train-schedule:${env.BUILD_NUMBER}\""
                         try {
